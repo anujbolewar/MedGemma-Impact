@@ -1,0 +1,37 @@
+# NeuroWeave Sentinel dependencies
+# Python 3.11+  |  Fully offline after model download
+
+# Deep learning core
+torch>=2.1.0
+transformers>=4.40.0
+bitsandbytes>=0.43.0
+accelerate>=0.27.0
+peft>=0.10.0
+
+# Gaze tracking
+mediapipe>=0.10.0
+opencv-python>=4.9.0
+
+# Numerics
+numpy>=1.26.0
+scipy>=1.12.0
+
+# Text-to-speech (offline)
+pyttsx3>=2.90
+TTS>=0.22.0
+
+# Audio playback for pre-recorded emergency WAV files
+pygame>=2.5.0
+
+# Grammar check (offline JRE-based)
+language-tool-python>=2.7.1
+
+# Image handling for camera preview
+Pillow>=10.0.0
+
+# Utilities
+pydantic>=2.0.0
+pyyaml>=6.0.0
+psutil>=5.9.0
+
+# tkinter is part of Python stdlib — no pip install required

@@ -1,0 +1,88 @@
+# NeuroWeave Sentinel — Runtime Configuration
+# All settings are validated by sentinel/core/config.py on startup.
+
+# ──────────────────────────────────────────────
+# Camera / Gaze Tracking
+# ──────────────────────────────────────────────
+camera:
+  index: 0                      # OpenCV camera index (0 = default webcam)
+  width: 640                    # Capture width in pixels
+  height: 480                   # Capture height in pixels
+  fps: 30                       # Target capture framerate
+
+gaze:
+  dwell_threshold_ms: 800       # Milliseconds gaze must hold on a cell to select it
+  blink_ear_threshold: 0.21     # Eye Aspect Ratio below this = blink detected
+  blink_consec_frames: 3        # Consecutive frames below EAR threshold = confirmed blink
+  long_blink_frames: 12         # Frames for a long blink (page navigation)
+  gaze_smoothing_alpha: 0.4     # EMA smoothing factor for raw gaze (0=more smooth, 1=raw)
+  confidence_min: 0.6           # Minimum MediaPipe confidence to use gaze frame
+
+# ──────────────────────────────────────────────
+# Symbol Board
+# ──────────────────────────────────────────────
+symbol_board:
+  columns: 3                    # Grid columns
+  rows: 3                       # Grid rows per page
+  pages: 3                      # Total pages (body, sensation, urgency+intensity)
+  cell_padding_px: 8            # Padding inside each cell
+
+# ──────────────────────────────────────────────
+# MedGemma LLM Engine
+# ──────────────────────────────────────────────
+llm:
+  model_id: "google/medgemma-4b-it"
+  cache_dir: "~/.cache/huggingface/hub"
+  quantization: "nf4"           # Options: nf4, int8, none
+  max_new_tokens: 60            # Max tokens to generate (one medical sentence)
+  temperature: 0.3              # Low temperature for deterministic clinical output
+  do_sample: true
+  repetition_penalty: 1.1
+  latency_budget_ms: 2300       # Hard cutoff — truncate if exceeded (2.5s - 200ms margin)
+  device_map: "auto"            # auto | cpu | cuda:0
+
+# ──────────────────────────────────────────────
+# Text-to-Speech
+# ──────────────────────────────────────────────
+tts:
+  rate: 150                     # Words per minute (lower = clearer for patients)
+  volume: 1.0                   # Volume 0.0–1.0
+  voice_id: null                # null = system default; set to engine-specific ID if needed
+
+# ──────────────────────────────────────────────
+# Emergency Override
+# ──────────────────────────────────────────────
+emergency:
+  cooldown_seconds: 10          # Minimum seconds between emergency triggers
+  messages:                     # Ordered list; first = primary emergency
+    - "EMERGENCY — I need immediate help now"
+    - "I am in pain — please come immediately"
+    - "Please call the nurse station"
+    - "I cannot breathe properly"
+  audio_dir: "assets/audio"     # Directory with pre-recorded WAV files (optional)
+  use_tts_fallback: true        # If WAV not found, use TTS engine instead
+
+# ──────────────────────────────────────────────
+# UI Display
+# ──────────────────────────────────────────────
+ui:
+  fullscreen: false             # Set true for clinical deployment
+  font_family: "Arial"
+  sentence_font_size: 36        # Large readable output text
+  board_font_size: 18           # Symbol board label size
+  status_font_size: 12
+  theme: "dark"                 # dark | light
+  show_camera_feed: true
+  show_latency_indicator: true
+  camera_preview_width: 240
+  camera_preview_height: 180
+
+# ──────────────────────────────────────────────
+# Logging
+# ──────────────────────────────────────────────
+logging:
+  level: "INFO"                 # DEBUG | INFO | WARNING | ERROR
+  log_file: "logs/sentinel.log"
+  max_bytes: 10485760           # 10MB
+  backup_count: 3
+  log_sessions: true            # Save structured communication session logs

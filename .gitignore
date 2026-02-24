@@ -1,0 +1,42 @@
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Virtual envs
+venv/
+.venv/
+env/
+
+# Models (large binary files)
+models/*.bin
+models/*.safetensors
+models/*.gguf
+models/medgemma-4b/
+models/phi*/
+*.task
+
+# Logs
+logs/*.jsonl
+logs/*.log
+/tmp/
+
+# IDE
+.vscode/
+.idea/
+*.swp
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Jupyter
+.ipynb_checkpoints/
+
+# nohup
+nohup.out

@@ -1,0 +1,84 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.backends.legacy:build"
+
+[project]
+name = "neuroweave-sentinel"
+version = "1.0.0"
+description = "Offline assistive communication system for ALS/locked-in patients using eye-gaze and MedGemma"
+requires-python = ">=3.11"
+license = { text = "Apache-2.0" }
+authors = [
+    { name = "NeuroWeave Sentinel Team" },
+]
+keywords = ["AAC", "ALS", "eye-gaze", "MedGemma", "assistive communication", "offline AI"]
+classifiers = [
+    "Programming Language :: Python :: 3.11",
+    "License :: OSI Approved :: Apache Software License",
+    "Operating System :: OS Independent",
+    "Intended Audience :: Healthcare Industry",
+    "Topic :: Scientific/Engineering :: Medical Science Apps.",
+]
+
+dependencies = [
+    # Deep learning & model
+    "torch>=2.2.0",
+    "transformers>=4.41.0",
+    "accelerate>=0.30.0",
+    "bitsandbytes>=0.43.0",
+    "huggingface-hub>=0.22.0",
+    "safetensors>=0.4.3",
+    "sentencepiece>=0.2.0",
+    # Computer vision & gaze tracking
+    "mediapipe>=0.10.14",
+    "opencv-python>=4.9.0.80",
+    # Text-to-speech (offline)
+    "pyttsx3>=2.90",
+    # Configuration & validation
+    "pydantic>=2.7.0",
+    "pyyaml>=6.0.1",
+    # Utilities
+    "numpy>=1.26.4",
+    "psutil>=5.9.8",
+    "scipy>=1.13.0",
+    "Pillow>=10.3.0",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.2.0",
+    "pytest-timeout>=2.3.1",
+    "pytest-mock>=3.14.0",
+    "ruff>=0.4.4",
+    "mypy>=1.10.0",
+    "types-PyYAML>=6.0.12",
+]
+gpu-monitor = [
+    "pynvml>=11.5.0",
+]
+
+[project.scripts]
+sentinel = "ui.app:main"
+sentinel-setup = "scripts.setup_model:main"
+sentinel-benchmark = "scripts.benchmark:main"
+
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["sentinel*", "ui*", "scripts*"]
+
+[tool.ruff]
+target-version = "py311"
+line-length = 100
+select = ["E", "F", "W", "I", "N", "UP", "B", "SIM"]
+ignore = ["E501"]
+
+[tool.mypy]
+python_version = "3.11"
+strict = true
+ignore_missing_imports = true
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+timeout = 30
+log_cli = true
+log_cli_level = "INFO"
